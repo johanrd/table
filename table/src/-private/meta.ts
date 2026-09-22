@@ -4,6 +4,7 @@ import type {
   UnwrapNamedArgs,
 } from '@glint/template/-private/integration';
 import type { ComponentSignatureArgs } from '@glint/template/-private/signature';
+import type { cellArgsType } from './interfaces/column.ts';
 
 /**
  * The metas of columns that set one.
@@ -94,11 +95,22 @@ type UnionToIntersection<U> = (
  *   [{ Cell: GroupByCell }, { Cell: UpdateCell }]
  *   → { groupBy: ... } & { onUpdate: ... }
  */
-export type CellArgsOf<Columns extends readonly unknown[]> = [
-  ProvidedCells<Columns>,
-] extends [never]
-  ? unknown
-  : UnionToIntersection<ExtraArgsOf<ProvidedCells<Columns>>>;
+export type CellArgsOf<Columns extends readonly unknown[]> =
+  number extends Columns['length']
+    ? DeclaredCellArgs<Columns[number]>
+    : [ProvidedCells<Columns>] extends [never]
+      ? unknown
+      : UnionToIntersection<ExtraArgsOf<ProvidedCells<Columns>>>;
+
+/**
+ * The cell args a column config declares, for a list that is a plain array.
+ * Such a list has no Cells to read the args from, the way a tuple does.
+ */
+type DeclaredCellArgs<Column> = Column extends {
+  [cellArgsType]?: infer CellArgs;
+}
+  ? CellArgs
+  : unknown;
 
 /**
  * The `@options` the Cells of a table ask for, from their args.

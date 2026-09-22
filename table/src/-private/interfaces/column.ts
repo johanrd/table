@@ -7,6 +7,7 @@ import type { Constructor } from '../private-types';
 import type { ComponentLike, ContentValue } from '@glint/template';
 
 declare const rowType: unique symbol;
+declare const cellArgsType: unique symbol;
 
 /**
  * What `value`, `options`, and a `Cell` receive.
@@ -25,6 +26,8 @@ export interface CellContext<T, out ColumnMeta = unknown, out Meta = unknown> {
 type ColumnPluginOption<P = Plugin> = P extends BasePlugin
   ? [Constructor<P>, () => ColumnOptionsFor<SignatureFrom<P>>]
   : [P | Constructor<P>, () => unknown];
+
+export type { cellArgsType };
 
 export type CellOptions = {
   /**
@@ -113,6 +116,15 @@ export interface ColumnConfig<
    * gives `headlessTable` a row type that depends on the order TypeScript checks the program in.
    */
   readonly [rowType]?: T;
+
+  /**
+   * Type-only, never set.
+   *
+   * A column list written in place is a tuple, and the args come from its Cells.
+   * A list with a declared type is a plain array, which has no Cells to read,
+   * so the args it declares are read from here.
+   */
+  readonly [cellArgsType]?: CellArgs;
 }
 
 export type ColumnKey<T> = NonNullable<ColumnConfig<T>['key']>;
