@@ -31,7 +31,8 @@ export type PluginSubclassInstance<PluginType> = PluginType & {
  * The data passed to a plugin's column APIs
  */
 export interface ColumnApi<T extends Table = Table> {
-  column: Column<DataTypeOf<T>>;
+  // A plugin is handed whatever column the table has, whatever its Cell asks for.
+  column: Column<DataTypeOf<T>, any, any, any>;
   table: T;
 }
 

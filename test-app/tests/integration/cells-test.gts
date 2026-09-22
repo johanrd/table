@@ -4,6 +4,7 @@ import { module, test } from "qunit";
 import { setupRenderingTest } from "ember-qunit";
 
 import { headlessTable } from "@universal-ember/table";
+import { resizeHandle } from "@universal-ember/table/plugins/column-resizing";
 
 import type { TOC } from "@ember/component/template-only";
 import type { CellContext } from "@universal-ember/table";
@@ -77,6 +78,13 @@ module("Cells", function (hooks) {
  * Never rendered: these templates only exist for the type checks.
  */
 const TypeChecks: TOC<{ Args: { table: Context["table"] } }> = <template>
+  {{! the header modifier and the resize handle take a column whose Cell asks for args }}
+  {{#each @table.columns as |column|}}
+    <th {{@table.modifiers.columnHeader column}}>
+      <button type="button" {{resizeHandle column}}></button>
+    </th>
+  {{/each}}
+
   {{#each @table.rows as |row|}}
     {{#each @table.columns as |column|}}
       {{#if column.Cell}}

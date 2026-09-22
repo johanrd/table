@@ -198,7 +198,10 @@ export class Table<
     }>;
     columnHeader: FunctionBasedModifier<{
       Element: HTMLElement;
-      Args: { Positional: [Column<DataType>]; Named: EmptyObject };
+      Args: {
+        Positional: [Column<DataType, ColumnMeta, Meta, CellArgs>];
+        Named: EmptyObject;
+      };
     }>;
     row: FunctionBasedModifier<{
       Element: HTMLElement;
@@ -225,7 +228,10 @@ export class Table<
     //       With curried+composed modifiers, only the plugin's headerModifier
     //       that has tracked changes would run, leaving the other modifiers alone
     columnHeader: modifier(
-      (element: HTMLElement, [column]: [Column<DataType>]): Destructor => {
+      (
+        element: HTMLElement,
+        [column]: [Column<DataType, ColumnMeta, Meta, CellArgs>],
+      ): Destructor => {
         const modifiers = this.plugins.map(
           (plugin) => plugin.headerCellModifier,
         );
