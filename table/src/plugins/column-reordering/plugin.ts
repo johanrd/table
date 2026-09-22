@@ -119,7 +119,12 @@ export class TableMeta<DataType = unknown> {
    * This is also why the order of the columns is maintained via column key
    */
   @tracked
-  columnOrder: ColumnOrder<DataType> = new ColumnOrder<DataType>({
+  columnOrder: ColumnOrder<DataType, any, any, any> = new ColumnOrder<
+    DataType,
+    any,
+    any,
+    any
+  >({
     columns: () => this.allColumns,
     visibleColumns: () => this.visibleColumns,
     save: this.save,
@@ -148,7 +153,7 @@ export class TableMeta<DataType = unknown> {
   /**
    * Using a `ColumnOrder` instance, set the order of all columns
    */
-  setOrder = (order: ColumnOrder<DataType>): void => {
+  setOrder = (order: ColumnOrder<DataType, any, any, any>): void => {
     this.columnOrder.setAll(order.map);
   };
 
@@ -159,7 +164,7 @@ export class TableMeta<DataType = unknown> {
   @action
   reset(): void {
     preferences.forTable(this.table, ColumnReordering).delete('order');
-    this.columnOrder = new ColumnOrder<DataType>({
+    this.columnOrder = new ColumnOrder<DataType, any, any, any>({
       columns: () => this.allColumns,
       visibleColumns: () => this.visibleColumns,
       save: this.save,
@@ -223,7 +228,12 @@ export class TableMeta<DataType = unknown> {
  * @private
  * Used for keeping track of and updating column order
  */
-export class ColumnOrder<DataType = unknown> {
+export class ColumnOrder<
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+> {
   /**
    * This map will be empty until we re-order something.
    */
@@ -243,7 +253,7 @@ export class ColumnOrder<DataType = unknown> {
        * - Provide `visibleColumns` to indicate which are visible
        * - Hidden columns maintain their position when toggled
        */
-      columns: () => Column<DataType>[];
+      columns: () => Column<DataType, ColumnMeta, Meta, CellArgs>[];
       /**
        * Optional: Record of which columns are currently visible.
        * When provided, moveLeft/moveRight will skip over hidden columns.
@@ -515,19 +525,19 @@ export class ColumnOrder<DataType = unknown> {
   }
 
   @cached
-  get orderedColumns(): Column<DataType>[] {
+  get orderedColumns(): Column<DataType, ColumnMeta, Meta, CellArgs>[] {
     const allColumns = this.args.columns();
     const columnsByKey = allColumns.reduce(
       (keyMap, column) => {
         keyMap[column.key] = column;
         return keyMap;
       },
-      {} as Record<string, Column<DataType>>,
+      {} as Record<string, Column<DataType, ColumnMeta, Meta, CellArgs>>,
     );
     // Use orderedMap which is reactive to preferences
     const mergedOrder = this.orderedMap;
 
-    const result: Column<DataType>[] = Array.from({
+    const result: Column<DataType, ColumnMeta, Meta, CellArgs>[] = Array.from({
       length: allColumns.length,
     });
 

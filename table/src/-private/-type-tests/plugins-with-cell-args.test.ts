@@ -2,9 +2,11 @@ import { expectTypeOf } from 'expect-type';
 
 import { headlessTable } from '../../index.ts';
 import {
+  ColumnOrder,
   moveLeft,
   moveRight,
   orderedColumnsFor,
+  setColumnOrder,
 } from '../../plugins/column-reordering/index.ts';
 import { isResizable } from '../../plugins/column-resizing/index.ts';
 import {
@@ -55,6 +57,9 @@ sort(column);
 moveLeft(column);
 moveRight(column);
 meta.forColumn(column, ColumnVisibility);
+
+// an order is built from the columns of the table it orders
+setColumnOrder(table, new ColumnOrder({ columns: () => [column] }));
 
 // the column list helpers keep the args, and the meta with them
 expectTypeOf(columns.for(table)[0]!.meta?.align).toEqualTypeOf<

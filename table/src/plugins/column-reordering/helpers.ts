@@ -40,7 +40,7 @@ export const setColumnOrder = <
   CellArgs = unknown,
 >(
   table: Table<DataType, ColumnMeta, Meta, CellArgs>,
-  order: ColumnOrder<DataType>,
+  order: ColumnOrder<DataType, ColumnMeta, Meta, CellArgs>,
 ): void => {
   // Note: The meta.forTable API doesn't preserve the DataType generic from the table parameter.
   // We use a type assertion here to match the expected types.
