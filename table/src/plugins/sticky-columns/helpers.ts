@@ -5,12 +5,22 @@ import { StickyColumns } from './plugin.ts';
 
 import type { Column } from '../../index.ts';
 
-export const isSticky = <DataType = unknown>(
-  column: Column<DataType>,
+export const isSticky = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, StickyColumns).isSticky;
 
-export const styleFor = <DataType = unknown>(
-  column: Column<DataType>,
+export const styleFor = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): Partial<CSSStyleDeclaration> => meta.forColumn(column, StickyColumns).style;
 
 /**
@@ -24,8 +34,13 @@ export const styleFor = <DataType = unknown>(
  * In the mean time, we'll need to append style strings, which is more work
  * for consumers, but is a reasonable trade-off for now.
  */
-export const styleStringFor = <DataType = unknown>(
-  column: Column<DataType>,
+export const styleStringFor = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): ReturnType<typeof htmlSafe> => {
   const columnMeta = meta.forColumn(column, StickyColumns);
 

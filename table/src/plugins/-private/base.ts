@@ -164,10 +164,13 @@ export const preferences = {
    * (though, if other plugins can guess how the underlying plugin access
    * works, they can access this data, too. No security guaranteed)
    */
-  forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
-    klass: Class<P>,
-  ) {
+  forColumn<
+    P extends BasePlugin<any>,
+    Data = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(column: Column<Data, ColumnMeta, Meta, CellArgs>, klass: Class<P>) {
     return {
       /**
        * delete an entry on the underlying `Map` used for this column-plugin pair
@@ -574,8 +577,14 @@ export const meta = {
    *
    * Note that this requires the column instance to exist on the table.
    */
-  forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
+  forColumn<
+    P extends BasePlugin<any>,
+    Data = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(
+    column: Column<Data, ColumnMeta, Meta, CellArgs>,
     klass: Class<P>,
   ): ColumnMetaFor<SignatureFrom<P>> {
     const columnMeta = column.table[COLUMN_META_KEY];
@@ -685,8 +694,14 @@ export const meta = {
      *
      * For example, multiple column-focused plugins may care about width or visibility
      */
-    forColumn<FeatureName extends string, Data = unknown>(
-      column: Column<Data>,
+    forColumn<
+      FeatureName extends string,
+      Data = unknown,
+      ColumnMeta = unknown,
+      Meta = unknown,
+      CellArgs = unknown,
+    >(
+      column: Column<Data, ColumnMeta, Meta, CellArgs>,
       featureName: FeatureName,
     ): ColumnFeatures[FeatureName] {
       const { plugins } = column.table;
@@ -792,8 +807,14 @@ export const options = {
     return fn() ?? {};
   },
 
-  forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
+  forColumn<
+    P extends BasePlugin<any>,
+    Data = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(
+    column: Column<Data, ColumnMeta, Meta, CellArgs>,
     klass: Class<P>,
   ): Partial<ColumnOptionsFor<SignatureFrom<P>>> {
     const tuple = column.config.pluginOptions?.find(
@@ -819,13 +840,19 @@ function getPluginInstance<Instance>(
   mapKey: Class<Instance>,
   factory: () => Instance,
 ): Instance;
-function getPluginInstance<RootKey extends Column<any> | Row<any>, Instance>(
+function getPluginInstance<
+  RootKey extends Column<any, unknown, unknown, any> | Row<any>,
+  Instance,
+>(
   map: WeakMap<Column | Row, Map<Class<Instance>, Instance>>,
   rootKey: RootKey,
   mapKey: Class<Instance>,
   factory: () => Instance,
 ): Instance;
-function getPluginInstance<RootKey extends Column<any> | Row<any>, Instance>(
+function getPluginInstance<
+  RootKey extends Column<any, unknown, unknown, any> | Row<any>,
+  Instance,
+>(
   ...args:
     | [FactoryMap<Instance>, Class<Instance>, () => Instance]
     | [

@@ -9,8 +9,13 @@ import type { Column } from '../../index.ts';
  * Is the column resizable?
  * This checks if resizing is enabled for this specific column,
  */
-export const isResizable = <DataType = unknown>(
-  column: Column<DataType>,
+export const isResizable = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, ColumnResizing).isResizable;
 
 /**
@@ -23,15 +28,25 @@ export const isResizable = <DataType = unknown>(
  * be marked as isResizing, because this is a user-scoped question:
  *   "Is the user directly resizing this column?"
  */
-export const isResizing = <DataType = unknown>(
-  column: Column<DataType>,
+export const isResizing = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, ColumnResizing).isResizing;
 
 /**
  * Does the column have room to shrink?
  */
-export const canShrink = <DataType = unknown>(
-  column: Column<DataType>,
+export const canShrink = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean | 0 => meta.forColumn(column, ColumnResizing).canShrink;
 
 /**
@@ -41,8 +56,13 @@ export const canShrink = <DataType = unknown>(
  *   - if resizing is enabled for the whole table
  *   - or if we're asking about the first column (resize handles may only be "between" columns)
  */
-export const hasResizeHandle = <DataType = unknown>(
-  column: Column<DataType>,
+export const hasResizeHandle = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, ColumnResizing).hasResizeHandle;
 
 /**
@@ -53,8 +73,13 @@ export const hasResizeHandle = <DataType = unknown>(
  *
  * This utility is meant to be applied to the `style` attribute of a particular td-like element.
  */
-export const styleStringFor = <DataType = unknown>(
-  column: Column<DataType>,
+export const styleStringFor = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): ReturnType<typeof htmlSafe> => {
   const columnMeta = meta.forColumn(column, ColumnResizing);
 

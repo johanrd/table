@@ -160,7 +160,12 @@ export class TableMeta {
   }
 
   @action
-  handleSort<DataType = unknown>(column: Column<DataType>): void {
+  handleSort<
+    DataType = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(column: Column<DataType, ColumnMeta, Meta, CellArgs>): void {
     const columnMeta = meta.forColumn(column, Sorting);
 
     if (!columnMeta.sortProperty) {
@@ -187,7 +192,12 @@ export class TableMeta {
   }
 
   @action
-  toggleAscending<DataType = unknown>(column: Column<DataType>): void {
+  toggleAscending<
+    DataType = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(column: Column<DataType, ColumnMeta, Meta, CellArgs>): void {
     const columnMeta = meta.forColumn(column, Sorting);
 
     if (!columnMeta.sortProperty) {
@@ -204,7 +214,12 @@ export class TableMeta {
   }
 
   @action
-  toggleDescending<DataType = unknown>(column: Column<DataType>): void {
+  toggleDescending<
+    DataType = unknown,
+    ColumnMeta = unknown,
+    Meta = unknown,
+    CellArgs = unknown,
+  >(column: Column<DataType, ColumnMeta, Meta, CellArgs>): void {
     const columnMeta = meta.forColumn(column, Sorting);
 
     if (!columnMeta.sortProperty) {

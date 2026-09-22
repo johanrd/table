@@ -8,21 +8,38 @@ import type { Column, Table } from '../../index.ts';
  * Move the column one position to the left.
  * If the column is first, nothing will happen.
  */
-export const moveLeft = <DataType = unknown>(column: Column<DataType>): void =>
-  meta.forColumn(column, ColumnReordering).moveLeft();
+export const moveLeft = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
+): void => meta.forColumn(column, ColumnReordering).moveLeft();
 
 /**
  * Move the column one position to the right.
  * If the column is last, nothing will happen.
  */
-export const moveRight = <DataType = unknown>(column: Column<DataType>): void =>
-  meta.forColumn(column, ColumnReordering).moveRight();
+export const moveRight = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
+): void => meta.forColumn(column, ColumnReordering).moveRight();
 
 /**
  * Override all column positions at once.
  */
-export const setColumnOrder = <DataType = unknown>(
-  table: Table<DataType>,
+export const setColumnOrder = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  table: Table<DataType, ColumnMeta, Meta, CellArgs>,
   order: ColumnOrder<DataType>,
 ): void => {
   // Note: The meta.forTable API doesn't preserve the DataType generic from the table parameter.
@@ -37,23 +54,38 @@ export const setColumnOrder = <DataType = unknown>(
 /**
  * Ask if the column cannot move to the left
  */
-export const cannotMoveLeft = <DataType = unknown>(
-  column: Column<DataType>,
+export const cannotMoveLeft = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, ColumnReordering).cannotMoveLeft;
 
 /**
  * Ask if the column cannot move to the right
  */
-export const cannotMoveRight = <DataType = unknown>(
-  column: Column<DataType>,
+export const cannotMoveRight = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean => meta.forColumn(column, ColumnReordering).cannotMoveRight;
 
 /**
  * Ask if the column can move to the left
  * (If your plugin doesn't expose `canMoveLeft`, use `!cannotMoveLeft`.)
  */
-export const canMoveLeft = <DataType = unknown>(
-  column: Column<DataType>,
+export const canMoveLeft = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean =>
   // Prefer this if available:
   // meta.forColumn(column, ColumnReordering).canMoveLeft
@@ -63,8 +95,13 @@ export const canMoveLeft = <DataType = unknown>(
  * Ask if the column can move to the right
  * (If your plugin doesn't expose `canMoveRight`, use `!cannotMoveRight`.)
  */
-export const canMoveRight = <DataType = unknown>(
-  column: Column<DataType>,
+export const canMoveRight = <
+  DataType = unknown,
+  ColumnMeta = unknown,
+  Meta = unknown,
+  CellArgs = unknown,
+>(
+  column: Column<DataType, ColumnMeta, Meta, CellArgs>,
 ): boolean =>
   // Prefer this if available:
   // meta.forColumn(column, ColumnReordering).canMoveRight
