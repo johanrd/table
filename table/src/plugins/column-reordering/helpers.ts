@@ -3,26 +3,29 @@ import { ColumnReordering } from './plugin.ts';
 
 import type { ColumnOrder, TableMeta } from './plugin.ts';
 import type { Column, Table } from '../../index.ts';
+import type { AnyColumn, AnyTable } from '../../-private/any.ts';
 
 /**
  * Move the column one position to the left.
  * If the column is first, nothing will happen.
  */
-export const moveLeft = <DataType = unknown>(column: Column<DataType>): void =>
-  meta.forColumn(column, ColumnReordering).moveLeft();
+export const moveLeft = <DataType = unknown>(
+  column: AnyColumn<DataType>,
+): void => meta.forColumn(column, ColumnReordering).moveLeft();
 
 /**
  * Move the column one position to the right.
  * If the column is last, nothing will happen.
  */
-export const moveRight = <DataType = unknown>(column: Column<DataType>): void =>
-  meta.forColumn(column, ColumnReordering).moveRight();
+export const moveRight = <DataType = unknown>(
+  column: AnyColumn<DataType>,
+): void => meta.forColumn(column, ColumnReordering).moveRight();
 
 /**
  * Override all column positions at once.
  */
 export const setColumnOrder = <DataType = unknown>(
-  table: Table<DataType>,
+  table: AnyTable<DataType>,
   order: ColumnOrder<DataType>,
 ): void => {
   // Note: The meta.forTable API doesn't preserve the DataType generic from the table parameter.
@@ -38,14 +41,14 @@ export const setColumnOrder = <DataType = unknown>(
  * Ask if the column cannot move to the left
  */
 export const cannotMoveLeft = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): boolean => meta.forColumn(column, ColumnReordering).cannotMoveLeft;
 
 /**
  * Ask if the column cannot move to the right
  */
 export const cannotMoveRight = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): boolean => meta.forColumn(column, ColumnReordering).cannotMoveRight;
 
 /**
@@ -53,7 +56,7 @@ export const cannotMoveRight = <DataType = unknown>(
  * (If your plugin doesn't expose `canMoveLeft`, use `!cannotMoveLeft`.)
  */
 export const canMoveLeft = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): boolean =>
   // Prefer this if available:
   // meta.forColumn(column, ColumnReordering).canMoveLeft
@@ -64,7 +67,7 @@ export const canMoveLeft = <DataType = unknown>(
  * (If your plugin doesn't expose `canMoveRight`, use `!cannotMoveRight`.)
  */
 export const canMoveRight = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): boolean =>
   // Prefer this if available:
   // meta.forColumn(column, ColumnReordering).canMoveRight

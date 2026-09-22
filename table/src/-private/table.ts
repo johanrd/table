@@ -19,6 +19,7 @@ import { composeFunctionModifiers } from './utils.ts';
 
 import type { BasePlugin, Plugin } from '../plugins/index.ts';
 import type { Class } from './private-types.ts';
+import type { AnyColumn } from './any.ts';
 import type { ColumnConfig, Destructor, TableConfig } from './interfaces';
 import type Owner from '@ember/owner';
 import { compatOwner } from './ember-compat.ts';
@@ -55,7 +56,7 @@ export interface Table<
   DataType = unknown,
   ColumnMeta = unknown,
   Meta = unknown,
-  CellArgs = any,
+  CellArgs = unknown,
 > {
   /**
    * @private
@@ -87,7 +88,7 @@ export class Table<
   DataType = unknown,
   ColumnMeta = unknown,
   Meta = unknown,
-  CellArgs = any,
+  CellArgs = unknown,
 > {
   /**
    * @private
@@ -198,7 +199,7 @@ export class Table<
     }>;
     columnHeader: FunctionBasedModifier<{
       Element: HTMLElement;
-      Args: { Positional: [Column<DataType>]; Named: EmptyObject };
+      Args: { Positional: [AnyColumn<DataType>]; Named: EmptyObject };
     }>;
     row: FunctionBasedModifier<{
       Element: HTMLElement;
@@ -225,7 +226,7 @@ export class Table<
     //       With curried+composed modifiers, only the plugin's headerModifier
     //       that has tracked changes would run, leaving the other modifiers alone
     columnHeader: modifier(
-      (element: HTMLElement, [column]: [Column<DataType>]): Destructor => {
+      (element: HTMLElement, [column]: [AnyColumn<DataType>]): Destructor => {
         const modifiers = this.plugins.map(
           (plugin) => plugin.headerCellModifier,
         );

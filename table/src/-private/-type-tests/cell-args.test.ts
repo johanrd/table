@@ -13,7 +13,14 @@ import {
 import { DataSorting, sort } from '../../plugins/data-sorting/index.ts';
 import { meta } from '../../plugins/index.ts';
 
-import type { CellContext, Column, ColumnConfig, Table } from '../../index.ts';
+import type {
+  AnyColumn,
+  AnyTable,
+  CellContext,
+  Column,
+  ColumnConfig,
+  Table,
+} from '../../index.ts';
 import type { ComponentLike } from '@glint/template';
 
 interface Person {
@@ -168,10 +175,10 @@ expectTypeOf<CellArgsOf<(typeof plain.columns)[0]['Cell']>>().toEqualTypeOf<
 
 /////////////////////////////////////////////
 // A column whose Cell takes args fits code that knows nothing about them
-function takesAnyColumn(column: Column<Person>) {
+function takesAnyColumn(column: AnyColumn<Person>) {
   return column.key;
 }
-function takesAnyTable(table: Table<Person>) {
+function takesAnyTable(table: AnyTable<Person>) {
   return table.columns.length;
 }
 takesAnyColumn(grouped.columns[0]!);

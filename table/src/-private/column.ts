@@ -24,7 +24,7 @@ export class Column<
   T = unknown,
   ColumnMeta = unknown,
   Meta = unknown,
-  CellArgs = any,
+  CellArgs = unknown,
 > {
   get Cell():
     | ComponentLike<CellContext<T, unknown, any> & CellArgs>

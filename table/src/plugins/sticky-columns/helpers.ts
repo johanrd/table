@@ -4,13 +4,14 @@ import { meta } from '../-private/base.ts';
 import { StickyColumns } from './plugin.ts';
 
 import type { Column } from '../../index.ts';
+import type { AnyColumn, AnyTable } from '../../-private/any.ts';
 
 export const isSticky = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): boolean => meta.forColumn(column, StickyColumns).isSticky;
 
 export const styleFor = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): Partial<CSSStyleDeclaration> => meta.forColumn(column, StickyColumns).style;
 
 /**
@@ -25,7 +26,7 @@ export const styleFor = <DataType = unknown>(
  * for consumers, but is a reasonable trade-off for now.
  */
 export const styleStringFor = <DataType = unknown>(
-  column: Column<DataType>,
+  column: AnyColumn<DataType>,
 ): ReturnType<typeof htmlSafe> => {
   const columnMeta = meta.forColumn(column, StickyColumns);
 

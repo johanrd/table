@@ -6,6 +6,8 @@ import Modifier from 'ember-modifier';
 import { meta } from '../-private/base.ts';
 import { ColumnResizing } from './plugin.ts';
 
+import type { AnyColumn } from '../../-private/any.ts';
+
 import type { ColumnMeta } from './plugin.ts';
 import type { Column } from '../../-private/column.ts';
 
@@ -25,10 +27,10 @@ const waiter = buildWaiter('ColumnResizing#ResizeHandle');
  */
 
 class ResizeHandle<DataType = unknown> extends Modifier<{
-  Args: { Positional: [Column<DataType>] };
+  Args: { Positional: [AnyColumn<DataType>] };
 }> {
   declare dragHandle: HTMLElement;
-  declare column: Column<DataType>;
+  declare column: AnyColumn<DataType>;
   declare meta: ColumnMeta;
 
   // Pointer
@@ -47,7 +49,7 @@ class ResizeHandle<DataType = unknown> extends Modifier<{
   token?: unknown;
 
   isSetup = false;
-  modify(element: Element, [column]: [Column<DataType>]): void {
+  modify(element: Element, [column]: [AnyColumn<DataType>]): void {
     this.column = column;
     this.meta = meta.forColumn(column, ColumnResizing);
     this.dragHandle = element as HTMLElement;

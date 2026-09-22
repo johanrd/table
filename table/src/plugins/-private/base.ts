@@ -9,6 +9,7 @@ import {
 import { normalizePluginsConfig } from './utils.ts';
 
 import type { Table } from '../../-private/table.ts';
+import type { AnyColumn, AnyTable } from '../../-private/any.ts';
 import type { ColumnReordering } from '../column-reordering';
 import type { ColumnVisibility } from '../column-visibility';
 import type { Class, Constructor } from '../../-private/private-types.ts';
@@ -165,7 +166,7 @@ export const preferences = {
    * works, they can access this data, too. No security guaranteed)
    */
   forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
+    column: AnyColumn<Data>,
     klass: Class<P>,
   ) {
     return {
@@ -328,7 +329,7 @@ function columnsFor<
 }
 
 function resolveColumns<DataType = any>(
-  table: Table<DataType>,
+  table: AnyTable<DataType>,
   requester?: Plugin<any>,
 ): Column<DataType>[] {
   assert(
@@ -575,7 +576,7 @@ export const meta = {
    * Note that this requires the column instance to exist on the table.
    */
   forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
+    column: AnyColumn<Data>,
     klass: Class<P>,
   ): ColumnMetaFor<SignatureFrom<P>> {
     const columnMeta = column.table[COLUMN_META_KEY];
@@ -686,7 +687,7 @@ export const meta = {
      * For example, multiple column-focused plugins may care about width or visibility
      */
     forColumn<FeatureName extends string, Data = unknown>(
-      column: Column<Data>,
+      column: AnyColumn<Data>,
       featureName: FeatureName,
     ): ColumnFeatures[FeatureName] {
       const { plugins } = column.table;
@@ -793,7 +794,7 @@ export const options = {
   },
 
   forColumn<P extends BasePlugin<any>, Data = unknown>(
-    column: Column<Data>,
+    column: AnyColumn<Data>,
     klass: Class<P>,
   ): Partial<ColumnOptionsFor<SignatureFrom<P>>> {
     const tuple = column.config.pluginOptions?.find(
@@ -819,13 +820,13 @@ function getPluginInstance<Instance>(
   mapKey: Class<Instance>,
   factory: () => Instance,
 ): Instance;
-function getPluginInstance<RootKey extends Column<any> | Row<any>, Instance>(
+function getPluginInstance<RootKey extends AnyColumn<any> | Row<any>, Instance>(
   map: WeakMap<Column | Row, Map<Class<Instance>, Instance>>,
   rootKey: RootKey,
   mapKey: Class<Instance>,
   factory: () => Instance,
 ): Instance;
-function getPluginInstance<RootKey extends Column<any> | Row<any>, Instance>(
+function getPluginInstance<RootKey extends AnyColumn<any> | Row<any>, Instance>(
   ...args:
     | [FactoryMap<Instance>, Class<Instance>, () => Instance]
     | [
